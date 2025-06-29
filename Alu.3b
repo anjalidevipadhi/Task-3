@@ -1,0 +1,38 @@
+module pipeline_processor(
+    input clk,
+    input reset
+);
+
+// Instruction Fetch stage
+reg [31:0] pc;
+wire [31:0] instruction;
+instruction_fetch if_stage(
+    .pc(pc),
+    .instruction(instruction)
+);
+
+// Instruction Decode stage
+reg [31:0] operand1, operand2;
+wire [31:0] result;
+instruction_decode id_stage(
+    .instruction(instruction),
+    .operand1(operand1),
+    .operand2(operand2)
+);
+
+// Execution stage
+wire [31:0] execution_result;
+execution ex_stage(
+    .operand1(operand1),
+    .operand2(operand2),
+    .result(execution_result)
+);
+
+// Memory Access stage
+reg [31:0] memory_data;
+memory_access ma_stage(
+    .address(execution_result),
+    .data(memory_data)
+);
+
+endmodule
